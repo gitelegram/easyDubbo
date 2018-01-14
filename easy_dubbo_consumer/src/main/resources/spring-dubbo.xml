@@ -1,0 +1,22 @@
+<?xml version= "1.0" encoding= "UTF-8" ?>
+<beans xmlns= "http://www.springframework.org/schema/beans"
+       xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:beans= "http://www.springframework.org/schema/beans"
+       xmlns:context ="http://www.springframework.org/schema/context"
+       xmlns:dubbo= "http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation ="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+       default-autowire= "byName">
+    <context:property-placeholder location="classpath:dubbo.properties" ignore-unresolvable="true" />
+    <dubbo:application name="dubbo-demo-consumer" owner="kelly.li" organization="tcdev"/>
+    <dubbo:registry protocol="zookeeper" address="各环境zk地址" group="/demo/group/default" />
+    <dubbo:consumer>
+        <dubbo:parameter key="qloglevel" value="10" />
+    </dubbo:consumer>
+    <dubbo:reference id="helloService" interface="com.gitelegram.common.api.HelloService" version="1.0" check="false" />
+    <dubbo:reference id="asycnHelloService" interface="com.gitelegram.common.api.HelloService" version="1.0" check="false">
+        <dubbo:method name="asyncSayHello" async="true" return="false"></dubbo:method>
+    </dubbo:reference>
+    <bean id="helloAction" class="com.gitelegram.common.HelloAction" ></bean>
+</beans>
